@@ -1,0 +1,17 @@
+# pkg does not reliably preserve execute bits — set them explicitly after install
+chmod +x \
+    /usr/local/etc/rc.d/pushover \
+    /usr/local/etc/rc.syshook.d/config/30-pushover \
+    /usr/local/etc/rc.syshook.d/monitor/30-pushover \
+    /usr/local/etc/rc.syshook.d/start/30-pushover \
+    /usr/local/etc/rc.syshook.d/stop/30-pushover \
+    /usr/local/opnsense/scripts/OPNsense/Pushover/sendNotification.py \
+    /usr/local/opnsense/scripts/OPNsense/Pushover/pushover_monitor.py
+
+if [ -f /usr/local/etc/pushover/pushover.conf ]; then
+    enabled=$(grep -m1 '^enabled' /usr/local/etc/pushover/pushover.conf | cut -d= -f2 | tr -d ' ')
+    if [ "$enabled" = "1" ]; then
+        echo "Starting pushover service..."
+        /usr/sbin/service pushover onestart || true
+    fi
+fi

@@ -1,0 +1,65 @@
+#!/usr/local/bin/php
+<?php
+
+require_once 'config.inc';
+require_once 'util.inc';
+
+$conf_path = '/usr/local/etc/pushover/pushover.conf';
+if (!file_exists($conf_path)) {
+    exit(0);
+}
+
+$conf = parse_ini_file($conf_path, true);
+$notify_down      = !empty($conf['general']['notify_gateway']);
+$notify_threshold = !empty($conf['general']['notify_gateway_threshold']);
+
+if (!$notify_down && !$notify_threshold) {
+    exit(0);
+}
+
+$affected = !empty($argv[1]) ? array_filter(array_map('trim', explode(',', $argv[1]))) : [];
+if (empty($affected)) {
+    exit(0);
+}
+
+$hostname = gethostname();
+
+foreach (return_gateways_status() as $status) {
+    if (!in_array($status['name'], $affected, true)) {
+        continue;
+    }
+
+    $name  = $status['name'];
+    $addr  = $status['gateway'] ?? '';
+    $state = $status['status'] ?? 'unknown';
+    $delay = ($status['delay'] ?? '~') !== '~' ? $status['delay'] : null;
+    $loss  = ($status['loss']  ?? '~') !== '~' ? $status['loss']  : null;
+
+    $metrics = [];
+    if ($loss  !== null) $metrics[] = "loss {$loss}";
+    if ($delay !== null) $metrics[] = "delay {$delay}";
+    $metrics_str = $metrics ? ' (' . implode(', ', $metrics) . ')' : '';
+
+    switch ($state) {
+        case 'down':
+            if (!$notify_down) continue 2;
+            $msg = "{$hostname}: Gateway DOWN: {$name}{$metrics_str}";
+            break;
+        case 'loss':
+        case 'delay':
+            if (!$notify_threshold) continue 2;
+            $msg = "{$hostname}: Gateway " . strtoupper($state) . ": {$name}{$metrics_str}";
+            break;
+        case 'none':
+            if (!$notify_down && !$notify_threshold) continue 2;
+            $msg = "{$hostname}: Gateway recovered: {$name}{$metrics_str}";
+            break;
+        default:
+            // force_down or unrecognised — skip
+            continue 2;
+    }
+
+    $encoded = rawurlencode($msg);
+    exec('/usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/Pushover/sendNotification.py ' . escapeshellarg($encoded) . ' 2>&1', $out, $rc);
+    log_msg("PUSHOVER: gateway notify for {$name} ({$state}), exit={$rc}", LOG_NOTICE);
+}

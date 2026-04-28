@@ -1,0 +1,6 @@
+<menu>
+    <!-- Plugin Pushover menu -->
+    <Services order="999">
+        <Pushover VisibleName="Pushover" url="/ui/pushover/" cssClass="fa fa-bell fa-fw"/>
+    </Services>
+</menu>

@@ -1,0 +1,40 @@
+<form>
+    <field>
+        <id>pushover.general.Enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Start the Pushover notification service.</help>
+    </field>
+    <field>
+        <id>pushover.general.APIToken</id>
+        <label>API Token</label>
+        <type>password</type>
+        <help><![CDATA[Application API token from <a href="https://pushover.net/apps" target="_blank" rel="noopener noreferrer">pushover.net/apps</a>]]></help>
+        <hint>30 alphanumeric characters</hint>
+    </field>
+    <field>
+        <id>pushover.general.UserKey</id>
+        <label>User / Group Key</label>
+        <type>password</type>
+        <help><![CDATA[Your user or group key from <a href="https://pushover.net" target="_blank" rel="noopener noreferrer">pushover.net</a>]]></help>
+        <hint>30 alphanumeric characters</hint>
+    </field>
+    <field>
+        <id>pushover.general.Device</id>
+        <label>Device</label>
+        <type>text</type>
+        <help>Optional: send to a specific device name. Leave blank to send to all devices.</help>
+    </field>
+    <field>
+        <id>pushover.general.Priority</id>
+        <label>Priority</label>
+        <type>dropdown</type>
+        <help>Notification priority. High bypasses quiet hours; lowest delivers silently.</help>
+    </field>
+    <field>
+        <id>pushover.general.Sound</id>
+        <label>Sound</label>
+        <type>text</type>
+        <help><![CDATA[Optional: override the default notification sound. See <a href="https://pushover.net/api#sounds" target="_blank" rel="noopener noreferrer">available sounds</a>.]]></help>
+    </field>
+</form>

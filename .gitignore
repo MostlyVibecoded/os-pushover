@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Build artifacts
+work/
+*.pkg
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.orig

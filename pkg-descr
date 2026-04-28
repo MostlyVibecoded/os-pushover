@@ -1,0 +1,11 @@
+Pushover push notification plugin for OPNsense.
+
+Sends alerts via the Pushover API for a wide range of system events:
+gateway up/down, WireGuard and OpenVPN tunnel state, Unbound DNS and
+DHCP service health, CPU temperature, fan failures, firmware updates,
+UPS events via apcupsd, system reboots, and configuration changes.
+
+Adds a Services > Pushover page to the OPNsense web UI with per-monitor
+toggles and configurable thresholds.
+
+WWW: https://pushover.net

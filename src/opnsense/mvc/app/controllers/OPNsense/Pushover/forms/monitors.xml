@@ -1,0 +1,104 @@
+<form>
+    <field>
+        <id>pushover.general.NotifyGateway</id>
+        <label>Gateway down / up</label>
+        <type>checkbox</type>
+        <help>Send a notification when a gateway goes fully down and when it recovers.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyGatewayThreshold</id>
+        <label>Gateway threshold violations (experimental)</label>
+        <type>checkbox</type>
+        <help>Send a notification when a gateway exceeds its configured dpinger loss or delay thresholds, with current metrics included. Force-down is ignored.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyReboot</id>
+        <label>System reboot / startup</label>
+        <type>checkbox</type>
+        <help>Send a notification when the system is shutting down and when it has finished booting.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyConfig</id>
+        <label>Configuration changes</label>
+        <type>checkbox</type>
+        <help>Send a notification whenever the configuration is saved, including the change description and user.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyUnbound</id>
+        <label>Unbound DNS up / down</label>
+        <type>checkbox</type>
+        <help>Send a notification when Unbound DNS stops or recovers. Rapid restarts from reconfiguration are suppressed.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyDHCP</id>
+        <label>ISC DHCPv4 up / down</label>
+        <type>checkbox</type>
+        <help>Send a notification when the ISC DHCPv4 server stops or recovers. Rapid restarts from reconfiguration are suppressed.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyDHCP6</id>
+        <label>ISC DHCPv6 up / down (experimental)</label>
+        <type>checkbox</type>
+        <help>Send a notification when the ISC DHCPv6 server stops or recovers. Rapid restarts from reconfiguration are suppressed.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyFirmware</id>
+        <label>Firmware / package updates available</label>
+        <type>checkbox</type>
+        <help>Send a notification when OPNsense detects package updates, and when the system is up to date again after updating. Fires automatically after each of OPNsense's own scheduled firmware checks.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyFan</id>
+        <label>Fan stopped (experimental)</label>
+        <type>checkbox</type>
+        <help>Send a notification when any fan reads 0 RPM for longer than the threshold. Fan sensors are auto-discovered from sysctl keys containing "fan" or "rpm".</help>
+    </field>
+    <field>
+        <id>pushover.general.FanThreshold</id>
+        <label>Fan stopped threshold (seconds)</label>
+        <type>text</type>
+        <help>Seconds a fan must read 0 RPM before alerting. Default: 30.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyCPUTemp</id>
+        <label>CPU temperature (experimental)</label>
+        <type>checkbox</type>
+        <help>Send a notification when any CPU core exceeds the threshold, and when it recovers. Recovery requires dropping 5°C below the threshold to prevent flapping.</help>
+    </field>
+    <field>
+        <id>pushover.general.CPUTempThreshold</id>
+        <label>CPU temperature threshold (°C)</label>
+        <type>text</type>
+        <help>Alert when any core reaches this temperature. Default: 80°C.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyOpenVPN</id>
+        <label>OpenVPN client down / up</label>
+        <type>checkbox</type>
+        <help>Send a notification when an OpenVPN client has been disconnected longer than the threshold, and when it reconnects.</help>
+    </field>
+    <field>
+        <id>pushover.general.OpenVPNThreshold</id>
+        <label>OpenVPN disconnect threshold (seconds)</label>
+        <type>text</type>
+        <help>Seconds a client must be disconnected before alerting. Default: 60. Suppresses brief reconnects during rekeying.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyWireGuard</id>
+        <label>WireGuard peer down / up</label>
+        <type>checkbox</type>
+        <help>Send a notification when a WireGuard peer has not completed a handshake within the threshold, and when it reconnects.</help>
+    </field>
+    <field>
+        <id>pushover.general.WireGuardThreshold</id>
+        <label>WireGuard handshake threshold (seconds)</label>
+        <type>text</type>
+        <help>Seconds since last handshake before a peer is considered down. Default: 300 (5 minutes). WireGuard rekeys every ~3 minutes under active traffic.</help>
+    </field>
+    <field>
+        <id>pushover.general.NotifyUPS</id>
+        <label>APCUPSd Events</label>
+        <type>checkbox</type>
+        <help>Send notifications for apcupsd events: communications lost/restored, power failure, power restored, battery exhausted. Requires apcupsd to be installed and writing to /var/log/apcupsd.events.</help>
+    </field>
+</form>

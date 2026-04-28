@@ -1,0 +1,10 @@
+<acl>
+    <page-services-pushover>
+        <name>WebCfg - Services: Pushover Notifications</name>
+        <description>Allow access to the Pushover notification module</description>
+        <patterns>
+            <pattern>ui/pushover/*</pattern>
+            <pattern>api/pushover/*</pattern>
+        </patterns>
+    </page-services-pushover>
+</acl>

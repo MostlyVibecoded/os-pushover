@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# PROVIDE: pushover
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=pushover
+rcvar=pushover_enable
+pidfile="/var/run/${name}.pid"
+command=/usr/sbin/daemon
+command_args="-f -P ${pidfile} /usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/Pushover/pushover_monitor.py"
+
+load_rc_config $name
+
+: ${pushover_enable:=NO}
+
+run_rc_command $1

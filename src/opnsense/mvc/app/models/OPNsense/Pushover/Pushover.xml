@@ -1,0 +1,104 @@
+<model>
+    <mount>//OPNsense/pushover</mount>
+    <description>OPNsense Pushover notification module</description>
+    <items>
+        <general>
+            <APIToken type="TextField">
+                <Required>Y</Required>
+                <mask>/^[a-zA-Z0-9]{30}$/</mask>
+                <ValidationMessage>Please enter a valid Pushover application API token (30 alphanumeric characters)</ValidationMessage>
+            </APIToken>
+            <UserKey type="TextField">
+                <Required>Y</Required>
+                <mask>/^[a-zA-Z0-9]{30}$/</mask>
+                <ValidationMessage>Please enter a valid Pushover user or group key (30 alphanumeric characters)</ValidationMessage>
+            </UserKey>
+            <Device type="TextField">
+                <Required>N</Required>
+                <mask>/^[a-zA-Z0-9_\-]{0,25}$|^$/</mask>
+                <ValidationMessage>Device name may only contain letters, numbers, hyphens, and underscores (max 25 characters)</ValidationMessage>
+            </Device>
+            <Priority type="OptionField">
+                <default>normal</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <lowest>Lowest (silent)</lowest>
+                    <low>Low</low>
+                    <normal>Normal</normal>
+                    <high>High (bypasses quiet hours)</high>
+                </OptionValues>
+            </Priority>
+            <Sound type="TextField">
+                <Required>N</Required>
+                <mask>/^[a-zA-Z0-9_\-]{0,50}$|^$/</mask>
+                <ValidationMessage>Sound name may only contain letters, numbers, hyphens, and underscores (max 50 characters)</ValidationMessage>
+            </Sound>
+            <NotifyGateway type="BooleanField">
+                <default>0</default>
+            </NotifyGateway>
+            <NotifyGatewayThreshold type="BooleanField">
+                <default>0</default>
+            </NotifyGatewayThreshold>
+            <NotifyReboot type="BooleanField">
+                <default>0</default>
+            </NotifyReboot>
+            <NotifyConfig type="BooleanField">
+                <default>0</default>
+            </NotifyConfig>
+            <Enabled type="BooleanField">
+                <default>0</default>
+            </Enabled>
+            <NotifyUPS type="BooleanField">
+                <default>0</default>
+            </NotifyUPS>
+            <NotifyUnbound type="BooleanField">
+                <default>0</default>
+            </NotifyUnbound>
+            <NotifyDHCP type="BooleanField">
+                <default>0</default>
+            </NotifyDHCP>
+            <NotifyDHCP6 type="BooleanField">
+                <default>0</default>
+            </NotifyDHCP6>
+            <NotifyFirmware type="BooleanField">
+                <default>0</default>
+            </NotifyFirmware>
+            <NotifyFan type="BooleanField">
+                <default>0</default>
+            </NotifyFan>
+            <FanThreshold type="TextField">
+                <Required>N</Required>
+                <default>30</default>
+                <mask>/^[1-9][0-9]{0,4}$|^$/</mask>
+                <ValidationMessage>Threshold must be a number of seconds (1–99999)</ValidationMessage>
+            </FanThreshold>
+            <NotifyCPUTemp type="BooleanField">
+                <default>0</default>
+            </NotifyCPUTemp>
+            <CPUTempThreshold type="TextField">
+                <Required>N</Required>
+                <default>80</default>
+                <mask>/^[1-9][0-9]{0,2}$|^$/</mask>
+                <ValidationMessage>Threshold must be a temperature in degrees Celsius (1–999)</ValidationMessage>
+            </CPUTempThreshold>
+            <NotifyOpenVPN type="BooleanField">
+                <default>0</default>
+            </NotifyOpenVPN>
+            <OpenVPNThreshold type="TextField">
+                <Required>N</Required>
+                <default>60</default>
+                <mask>/^[1-9][0-9]{0,4}$|^$/</mask>
+                <ValidationMessage>Threshold must be a number of seconds (1–99999)</ValidationMessage>
+            </OpenVPNThreshold>
+            <NotifyWireGuard type="BooleanField">
+                <default>0</default>
+            </NotifyWireGuard>
+            <WireGuardThreshold type="TextField">
+                <Required>N</Required>
+                <default>300</default>
+                <mask>/^[1-9][0-9]{0,4}$|^$/</mask>
+                <ValidationMessage>Threshold must be a number of seconds (1–99999)</ValidationMessage>
+            </WireGuardThreshold>
+        </general>
+    </items>
+</model>

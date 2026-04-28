@@ -1,0 +1,19 @@
+#!/bin/sh
+
+CONF=/usr/local/etc/pushover/pushover.conf
+
+[ -f "$CONF" ] || exit 0
+
+enabled=$(grep -m1 '^enabled' "$CONF" | cut -d= -f2 | tr -d ' ')
+notify_reboot=$(grep -m1 '^notify_reboot' "$CONF" | cut -d= -f2 | tr -d ' ')
+
+if [ "$enabled" = "1" ]; then
+    /usr/sbin/service pushover onestop
+fi
+
+# Send shutdown notification
+[ "$notify_reboot" = "1" ] || exit 0
+hostname=$(hostname -s)
+msg=$(printf 'System shutting down: %s' "$hostname" | /usr/local/bin/python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.stdin.read()))")
+PUSHOVER_TIMEOUT=5 /usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/Pushover/sendNotification.py \
+    "$msg" 2>&1 | logger -t pushover -p daemon.notice

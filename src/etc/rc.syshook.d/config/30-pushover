@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# $1 is the new config.xml — read all state from it directly, not from
+# pushover.conf, which is only re-rendered after this syshook runs.
+CONFIG_FILE="$1"
+[ -f "$CONFIG_FILE" ] || exit 0
+
+notify_config=$(grep -o '<NotifyConfig>[^<]*</NotifyConfig>' "$CONFIG_FILE" | head -1 | sed 's/<[^>]*>//g')
+[ "$notify_config" = "1" ] || exit 0
+
+description=$(grep -o '<description>[^<]*</description>' "$CONFIG_FILE" | head -1 | sed 's/<[^>]*>//g')
+username=$(grep -o '<username>[^<]*</username>' "$CONFIG_FILE" | head -1 | sed 's/<[^>]*>//g')
+
+# Skip system/internal writes (@localhost or no username)
+case "$username" in
+    *@localhost|"") exit 0 ;;
+esac
+
+# Skip saves to the Pushover config itself (meta noise)
+case "$description" in
+    */api/pushover/*) exit 0 ;;
+esac
+
+hostname=$(hostname -s)
+if [ -n "$description" ] && [ -n "$username" ]; then
+    plain="Config saved on ${hostname}: ${description} by ${username}"
+elif [ -n "$description" ]; then
+    plain="Config saved on ${hostname}: ${description}"
+else
+    plain="Config saved on ${hostname}"
+fi
+msg=$(printf '%s' "$plain" | /usr/local/bin/python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.stdin.read()))")
+
+PUSHOVER_TIMEOUT=5 /usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/Pushover/sendNotification.py \
+    "$msg" 2>&1 | logger -t pushover -p daemon.notice
