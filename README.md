@@ -90,3 +90,7 @@ configctl pushover notify "Your+message+here"
 ```
 
 The message must be URL-encoded (spaces as `+` or `%20`).
+
+## Acknowledgements
+
+This plugin was developed with assistance from Claude (Anthropic).
