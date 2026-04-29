@@ -1,0 +1,56 @@
+name: Build and release pkg
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build pkg on FreeBSD
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: "14.2"
+          usesh: true
+          prepare: |
+            pkg install -y git
+          run: |
+            git clone --depth=1 https://github.com/opnsense/plugins /usr/plugins
+
+            BUILD_DIR=/usr/plugins/sysutils/os-pushover-build
+            mkdir -p "$BUILD_DIR"
+            cp -r src "$BUILD_DIR/"
+            cp Makefile pkg-descr +POST_INSTALL.post "$BUILD_DIR/"
+
+            chmod +x \
+              "$BUILD_DIR/src/etc/rc.d/pushover" \
+              "$BUILD_DIR/src/etc/rc.syshook.d/config/30-pushover" \
+              "$BUILD_DIR/src/etc/rc.syshook.d/monitor/30-pushover" \
+              "$BUILD_DIR/src/etc/rc.syshook.d/start/30-pushover" \
+              "$BUILD_DIR/src/etc/rc.syshook.d/stop/30-pushover" \
+              "$BUILD_DIR/src/opnsense/scripts/OPNsense/Pushover/sendNotification.py" \
+              "$BUILD_DIR/src/opnsense/scripts/OPNsense/Pushover/pushover_monitor.py"
+
+            cd "$BUILD_DIR" && make package
+
+            cp "$BUILD_DIR"/work/pkg/*.pkg "$GITHUB_WORKSPACE/"
+
+      - name: Generate SHA256 checksum
+        run: |
+          sha256sum *.pkg > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.pkg
+            SHA256SUMS
+          generate_release_notes: false
