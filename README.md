@@ -1,6 +1,8 @@
 # os-pushover
 
-Pushover push notification plugin for OPNsense. Adds a **Services → Pushover** page to the web UI with a persistent background daemon and event hooks for system notifications.
+[![Build and release pkg](https://github.com/MostlyVibecoded/os-pushover/actions/workflows/release.yml/badge.svg)](https://github.com/MostlyVibecoded/os-pushover/actions/workflows/release.yml)
+
+Pushover notification plugin for OPNsense. Adds a **Services → Pushover** page to the web UI with a persistent background daemon and event hooks for system notifications.
 
 ## Requirements
 
@@ -36,6 +38,14 @@ sh /path/to/os-pushover/install.sh
 Copies files directly. Simpler but not tracked by `pkg`.
 
 After either method, **Services → Pushover** will appear in the web UI.
+
+### Verifying the package
+
+Each release includes a `SHA256SUMS` file. To verify the download:
+
+```sh
+sha256sum -c SHA256SUMS
+```
 
 ## Configuration
 
