@@ -20,9 +20,9 @@ jobs:
           release: "14.2"
           usesh: true
           prepare: |
-            pkg update -f
-            pkg upgrade -y
-            pkg install -y git
+            env IGNORE_OSVERSION=yes pkg update -f
+            env IGNORE_OSVERSION=yes pkg upgrade -y
+            env IGNORE_OSVERSION=yes pkg install -y git
           run: |
             git clone --depth=1 https://github.com/opnsense/plugins /usr/plugins
 
